@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 fun QuizScreen(
     onQuizFinished: (Int) -> Unit
 ) {
-    // 1. Acceso a los datos mediante el repositorio (No itera, usa índice)
+    // 1. Acceso a los datos mediante el repositorio usa índice
     val questions = QuizRepository.androidHistoryQuiz
     var currentIndex by remember { mutableIntStateOf(0) }
     var score by remember { mutableIntStateOf(0) }
