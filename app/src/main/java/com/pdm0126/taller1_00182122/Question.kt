@@ -58,7 +58,7 @@ object QuizRepository {
         ),
         Question(
             id = 7,
-            text = "¿En qué año Android superó el $50%$ de la cuota de mercado global?",
+            text = "¿En qué año Android superó el 50% de la cuota de mercado global?",
             options = listOf("2009", "2011", "2013", "2015"),
             correctAnswerIndex = 1,
             funFact = "Para finales de 2011, Android ya dominaba el mercado superando a iOS."

@@ -4,16 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.pdm0126.taller1_00182122.ui.theme.AndroidPediaByCastroRecinosTheme
 
 class MainActivity : ComponentActivity() {
@@ -70,22 +82,38 @@ fun App(modifier: Modifier = Modifier) {
 
 @Composable
 fun ResultsScreen(score: Int, totalQuestions: Int, onRestart: () -> Unit) {
-
-    androidx.compose.foundation.layout.Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        androidx.compose.material3.Text(
-            text = "¡Quiz Terminado!",
-            style = androidx.compose.material3.MaterialTheme.typography.headlineMedium
+        // Logo de Android (Versión sin fondo y un poco más grande)
+        Image(
+            painter = painterResource(id = R.drawable.android_logo_2023_22),
+            contentDescription = "Android Logo",
+            modifier = Modifier
+                .size(150.dp)
+                .padding(bottom = 32.dp)
         )
-        androidx.compose.material3.Text(
+
+        Text(
+            text = "FIN",
+            modifier = Modifier.padding(bottom = 16.dp),
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Text(
             text = "Tu puntaje: $score / $totalQuestions",
-            style = androidx.compose.material3.MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
-        androidx.compose.material3.Button(onClick = onRestart) {
-            androidx.compose.material3.Text("Volver al Inicio")
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF004080),
+                contentColor = Color.White
+            ),
+            onClick = onRestart
+        ) {
+            Text("Volver al Inicio")
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.pdm0126.taller1_00182122
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -15,7 +17,7 @@ import androidx.compose.ui.unit.sp
 fun QuizScreen(
     onQuizFinished: (Int) -> Unit
 ) {
-    // 1. Acceso a los datos mediante el repositorio usa índice
+    // 1. Acceso a los datos mediante el repositorio usa índice como puntero
     val questions = QuizRepository.androidHistoryQuiz
     var currentIndex by remember { mutableIntStateOf(0) }
     var score by remember { mutableIntStateOf(0) }
@@ -28,9 +30,18 @@ fun QuizScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.android_logo_2023_22),
+            contentDescription = "Android Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(bottom = 16.dp)
+        )
+
         // Indicadores de progreso y puntaje
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -39,6 +50,7 @@ fun QuizScreen(
             Text(
                 text = "Pregunta ${currentIndex + 1} de ${questions.size}",
                 style = MaterialTheme.typography.bodyLarge,
+
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -50,7 +62,7 @@ fun QuizScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Card de la Pregunta
+
         Card(
             modifier = Modifier.fillMaxWidth().heightIn(min = 120.dp),
             colors = CardDefaults.cardColors(
@@ -74,12 +86,11 @@ fun QuizScreen(
                 val isCorrect = index == currentQuestion.correctAnswerIndex
                 val isSelected = index == selectedOptionIndex
 
-                // Lógica de colores según estado
                 val buttonColor = when {
-                    !isAnswered -> MaterialTheme.colorScheme.surfaceVariant
-                    isCorrect -> Color(0xFF4CAF50)
-                    isSelected -> Color(0xFFF44336)
-                    else -> MaterialTheme.colorScheme.surfaceVariant
+                    !isAnswered -> Color(0xFF212121)
+                    isCorrect -> Color(0xFF388E3C)
+                    isSelected -> Color(0xFFD32F2F)
+                    else -> Color(0xFF212121).copy(alpha = 0.7f)
                 }
 
                 Button(
@@ -93,8 +104,7 @@ fun QuizScreen(
                     modifier = Modifier.fillMaxWidth().height(56.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = buttonColor,
-                        contentColor = if (isAnswered && (isCorrect || isSelected)) Color.White
-                        else MaterialTheme.colorScheme.onSurfaceVariant
+                        contentColor = Color.White
                     ),
                     shape = MaterialTheme.shapes.medium
                 ) {
@@ -108,7 +118,7 @@ fun QuizScreen(
         // Sección de Feedback y Siguiente
         if (isAnswered) {
             Text(
-                text = "💡 ${currentQuestion.funFact}",
+                text = "Curiosidad: ${currentQuestion.funFact}",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -117,16 +127,18 @@ fun QuizScreen(
             Button(
                 onClick = {
                     if (currentIndex + 1 < questions.size) {
-                        // Reset para la siguiente pregunta
                         currentIndex++
                         selectedOptionIndex = -1
                         isAnswered = false
                     } else {
-                        // Fin del quiz
                         onQuizFinished(score)
                     }
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004080),
+                    contentColor = Color.White
+                )
             ) {
                 Text(if (currentIndex + 1 < questions.size) "Siguiente" else "Ver Resultados")
             }
